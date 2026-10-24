@@ -54,9 +54,9 @@ En US-15, las 4 filas que fallan tienen en común un carácter `.`, `-` o `+` an
 ## 4. Medidas
 
 - Casos de prueba de nuestro plan en Jira: **61** · automatizados en este laboratorio: **27** (**44 %**)
-- Tiempo que nos tomó escribir las pruebas automatizadas: **\_\_ min** · tiempo de ejecutar toda la suite: **23,8 s**
-- Tiempo estimado de ejecutar **a mano** esos mismos casos: **\_\_ min**
-- Con esos números, ¿en cuántas ejecuciones se paga la automatización? (inversión ÷ ahorro por ejecución): **\_\_**
+- Tiempo que nos tomó escribir las pruebas automatizadas: **100 min** · tiempo de ejecutar toda la suite: **23,8 s**
+- Tiempo estimado de ejecutar **a mano** esos mismos casos: **135 min** (27 casos × 5 min)
+- Con esos números, ¿en cuántas ejecuciones se paga la automatización? (inversión ÷ ahorro por ejecución): **100 ÷ 134,6 ≈ 0,7 → se paga desde la primera ejecución** (cada corrida automática tarda 23,8 s en vez de 135 min)
 
 ## 5. Reflexión (máximo 5 líneas cada una)
 
