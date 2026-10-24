@@ -27,7 +27,7 @@ const CORREOS_CON_BUG = new Set(['ana.gomez@gmail.com', 'ana-gomez@gmail.com', '
 
 test.describe('US-13 · Ir a pagar desde el carrito', () => {
   test('CA3: con total cero o negativo no se puede ir a pagar', async ({ page }) => {
-    test.fail(true, 'JIRA-TOTAL0 · con la cantidad en 0 (total $ 0) el botón "Ir a pagar" sigue habilitado');
+    test.fail(true, 'CDC-42 · con la cantidad en 0 (total $ 0) el botón "Ir a pagar" sigue habilitado');
     const tienda = new TiendaPage(page);
     await tienda.abrir();
     await tienda.agregar('Mochila escolar');
@@ -73,7 +73,7 @@ test.describe('US-14 · Completar mis datos de envío', () => {
 test.describe('US-15 · Ingresar un correo electrónico válido', () => {
   for (const correo of CORREOS_VALIDOS) {
     test(`CA1-CA3: el correo válido ${correo} se acepta`, async ({ page }) => {
-      test.fail(CORREOS_CON_BUG.has(correo), 'JIRA-CORREO · la tienda rechaza correos válidos con . - + o dominio .edu.co');
+      test.fail(CORREOS_CON_BUG.has(correo), 'CDC-48 · la tienda rechaza correos válidos con . - + o dominio .edu.co');
       const tienda = new TiendaPage(page);
       await tienda.abrir();
       await tienda.agregar('Esfero azul');

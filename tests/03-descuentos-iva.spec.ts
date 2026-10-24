@@ -33,8 +33,8 @@ test.describe('US-09 · Aplicar un código de descuento', () => {
   // Prueba dirigida por datos: una prueba por variante. Las variantes con bug fallan hoy (la tienda distingue
   // mayúsculas y minúsculas), así que solo ESAS filas quedan como fallo esperado.
   const VARIANTES = [
-    { codigo: 'desc10', bug: 'JIRA-MAYUS' },
-    { codigo: 'Desc10', bug: 'JIRA-MAYUS' },
+    { codigo: 'desc10', bug: 'CDC-30' },
+    { codigo: 'Desc10', bug: 'CDC-30' },
     { codigo: ' DESC10 ', bug: '' },
   ];
   for (const { codigo, bug } of VARIANTES) {
@@ -74,7 +74,7 @@ test.describe('US-10 · Recibir aviso si el código no es válido', () => {
   });
 
   test('CA2: un código inválido NO borra un descuento válido ya aplicado', async ({ page }) => {
-    test.fail(true, 'JIRA-CODIGO · aplicar un código inválido borra el descuento válido que ya estaba');
+    test.fail(true, 'CDC-33 · aplicar un código inválido borra el descuento válido que ya estaba');
     // ARRANGE: 1 mochila con DESC10 aplicado
     await page.goto('/');
     const tarjeta = page
@@ -101,7 +101,7 @@ test.describe('US-10 · Recibir aviso si el código no es válido', () => {
 
 test.describe('US-11 · Ver el IVA correcto', () => {
   test('CA2: con descuento, el IVA se calcula sobre el valor descontado', async ({ page }) => {
-    test.fail(true, 'JIRA-IVA · con descuento, el IVA se calcula sobre el subtotal sin descontar');
+    test.fail(true, 'CDC-36 · con descuento, el IVA se calcula sobre el subtotal sin descontar');
     // ORÁCULO: el valor esperado sale del REQUISITO, no de lo que muestra la tienda.
     const subtotal = 65000;
     const descuento = subtotal * 0.1;
@@ -118,7 +118,7 @@ test.describe('US-11 · Ver el IVA correcto', () => {
 
 test.describe('US-12 · Ver el total a pagar correcto', () => {
   test('CA2: con descuento, el total es subtotal − descuento + IVA (IVA sobre lo descontado)', async ({ page }) => {
-    test.fail(true, 'JIRA-IVA · el total sale mal porque el IVA se calcula sobre el subtotal sin descontar');
+    test.fail(true, 'CDC-39 · el total sale mal porque el IVA se calcula sobre el subtotal sin descontar');
     const subtotal = 65000;
     const descuento = subtotal * 0.1;
     const iva = (subtotal - descuento) * 0.19;

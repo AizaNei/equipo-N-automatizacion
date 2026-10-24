@@ -16,7 +16,7 @@ test('H1 · el catálogo tiene 8 productos', async ({ page }) => {
 });
 
 test('H2 · el IVA de 2 mochilas con DESC20 es $ 19.760', async ({ page }) => {
-  test.fail(true, 'JIRA-IVA · con descuento, el IVA se calcula sobre el subtotal sin descontar');
+  test.fail(true, 'CDC-36 · con descuento, el IVA se calcula sobre el subtotal sin descontar');
   await page.goto('/');
   const tarjeta = page
     .locator('.rounded-lg')

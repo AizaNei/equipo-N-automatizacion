@@ -1,6 +1,6 @@
 # Entrega · Laboratorio 3.1 · Introducción a la automatización de pruebas
 
-**Equipo:** `equipo-N` · **Integrantes:** _nombres_ · **Repositorio:** https://github.com/AizaNei/equipo-N-automatizacion
+**Equipo:** individual · **Integrantes:** Neiver Fernandez · **Repositorio:** https://github.com/AizaNei/equipo-N-automatizacion
 
 > Respondan aquí, en este archivo, y háganle commit. Sean breves y concretos: una frase buena vale más que un párrafo.
 
@@ -25,22 +25,21 @@
 
 ## 2. Bugs que nuestra suite detecta
 
-> En cada prueba la clave aparece como `JIRA-…`: reemplácenla por la clave real del bug en su Jira (por ejemplo `PRJ-12`).
-
 | Prueba (archivo › título) | Bug en Jira (clave) | ¿Quedó con `test.fail(...)`? | Evidencia (captura o trace) |
 |---|---|---|---|
-| 02-carrito › US-04 CA3: 4 + 4 mochilas supera el stock | JIRA-STOCK | Sí | Expected "4", Received "8" |
-| 02-carrito › US-05 CA2: "+" no pasa del stock | JIRA-MAS | Sí | Expected "6", Received "7" |
-| 02-carrito › US-06 CA2: "−" no la deja en 0 | JIRA-MENOS | Sí | Expected "1", Received "0" |
-| 03-descuentos-iva › US-09 CA3: "desc10" y "Desc10" | JIRA-MAYUS | Sí (solo esas 2 filas) | La fila Descuento queda en $ 0 |
-| 03-descuentos-iva › US-10 CA2: un código inválido no borra el descuento | JIRA-CODIGO | Sí | Descuento pasa de $ 6.500 a $ 0 |
-| 03-descuentos-iva › US-11 CA2 y US-12 CA2 · heredados › H2 | JIRA-IVA | Sí | IVA esperado $ 11.115, recibido $ 12.350 · Total esperado $ 69.615, recibido $ 70.850 |
-| 04-checkout › US-13 CA3: no se paga con total cero | JIRA-TOTAL0 | Sí | El botón "Ir a pagar" sigue habilitado |
-| 04-checkout › US-15 CA1-CA3: correos válidos (4 de 6 filas) | JIRA-CORREO | Sí (solo esas 4 filas) | No aparece "¡Pedido confirmado!" |
-| 05-confirmacion › US-16 CA1: formulario vacío en la compra siguiente | JIRA-FORM | Sí | El nombre aparece como "Ana Gómez" |
-| 05-confirmacion › US-17 CA3: número de pedido tras recargar | JIRA-NUMPEDIDO | Sí | Ambos pedidos salen con el mismo número (#1001) |
+| 02-carrito › US-04 CA3: 4 + 4 mochilas supera el stock | CDC-14 | Sí | Expected "4", Received "8" |
+| 02-carrito › US-05 CA2: "+" no pasa del stock | CDC-17 | Sí | Expected "6", Received "7" |
+| 02-carrito › US-06 CA2: "−" no la deja en 0 | CDC-20 | Sí | Expected "1", Received "0" |
+| 03-descuentos-iva › US-09 CA3: "desc10" y "Desc10" | CDC-30 | Sí (solo esas 2 filas) | La fila Descuento queda en $ 0 |
+| 03-descuentos-iva › US-10 CA2: un código inválido no borra el descuento | CDC-33 | Sí | Descuento pasa de $ 6.500 a $ 0 |
+| 03-descuentos-iva › US-11 CA2 · heredados › H2 | CDC-36 | Sí | IVA esperado $ 11.115, recibido $ 12.350 (H2: esperado $ 19.760, recibido $ 24.700) |
+| 03-descuentos-iva › US-12 CA2: total con descuento | CDC-39 | Sí | Total esperado $ 69.615, recibido $ 70.850 |
+| 04-checkout › US-13 CA3: no se paga con total cero | CDC-42 | Sí | El botón "Ir a pagar" sigue habilitado |
+| 04-checkout › US-15 CA1-CA3: correos válidos (4 de 6 filas) | CDC-48 | Sí (solo esas 4 filas) | No aparece "¡Pedido confirmado!" |
+| 05-confirmacion › US-16 CA1: formulario vacío en la compra siguiente | CDC-51 | Sí | El nombre aparece como "Ana Gómez" |
+| 05-confirmacion › US-17 CA3: número de pedido tras recargar | CDC-54 | Sí | Ambos pedidos salen con el mismo número (#1001) |
 
-Sobre US-11 y US-12: es **un solo bug** (el IVA se calcula sobre el subtotal sin descontar) visto desde dos criterios; el total sale mal como consecuencia. US-13 CA3 parece igual a US-06 CA2, pero es **otro bug**: aunque se corrija el "−", la tienda seguiría sin validar el total antes de cobrar.
+Sobre US-11 y US-12: en Jira son dos issues (CDC-36 y CDC-39), pero tienen **la misma causa raíz**: el IVA se calcula sobre el subtotal sin descontar, y el total sale mal como consecuencia. Si se corrige el cálculo del IVA, las dos pruebas deberían pasar. US-13 CA3 parece igual a US-06 CA2, pero es **otro bug**: aunque se corrija el "−", la tienda seguiría sin validar el total antes de cobrar.
 
 En US-15, las 4 filas que fallan tienen en común un carácter `.`, `-` o `+` antes de la @, o un dominio de dos niveles (`.edu.co`): es **un solo bug**, una validación de correo demasiado estricta.
 
