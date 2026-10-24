@@ -53,15 +53,24 @@ En US-15, las 4 filas que fallan tienen en común un carácter `.`, `-` o `+` an
 
 ## 4. Medidas
 
-- Casos de prueba de nuestro plan en Jira: **\_\_** · automatizados en este laboratorio: **\_\_** (**\_\_ %**)
+- Casos de prueba de nuestro plan en Jira: **61** · automatizados en este laboratorio: **27** (**44 %**)
 - Tiempo que nos tomó escribir las pruebas automatizadas: **\_\_ min** · tiempo de ejecutar toda la suite: **\_\_ s**
 - Tiempo estimado de ejecutar **a mano** esos mismos casos: **\_\_ min**
 - Con esos números, ¿en cuántas ejecuciones se paga la automatización? (inversión ÷ ahorro por ejecución): **\_\_**
 
 ## 5. Reflexión (máximo 5 líneas cada una)
 
-1. ¿Qué casos de nuestro plan **no** automatizaríamos y por qué?
-2. Si la tienda cambia el HTML de un botón, ¿qué parte de nuestro código se rompe y cuál no? ¿Qué aportó el Page Object?
-3. Una prueba roja nuestra que **no** era un bug del producto: ¿cómo nos dimos cuenta?
-4. ¿Qué bug o riesgo **no** habría encontrado la automatización por sí sola?
-5. ¿Qué haríamos distinto en un proyecto real?
+1. **¿Qué casos de nuestro plan no automatizaríamos y por qué?**
+   No automatizaría los de diseño, como ver la tienda en un celular de 375 px (US-01 CA4) o los contrastes de color de US-20. Pienso que ahí la pregunta es "¿se ve bien?" y eso lo juzga mejor una persona mirando que una prueba comparando textos. Tampoco automatizaría algo que se prueba una sola vez y no vuelve a cambiar, porque escribir la prueba toma más tiempo que hacerlo a mano.
+
+2. **Si la tienda cambia el HTML de un botón, ¿qué se rompe y qué no? ¿Qué aportó el Page Object?**
+   Las pruebas que escriben el localizador directamente (como las de 02-carrito) se romperían todas, y habría que corregir una por una. Las que usan `TiendaPage` no: solo cambiaría el método de la clase y listo. Lo noté al escribir la compra completa varias veces: con `comprar()` cada prueba queda de pocas líneas y se entiende qué está probando sin leer HTML.
+
+3. **Una prueba roja que no era un bug del producto: ¿cómo nos dimos cuenta?**
+   Me pasó en la Parte 1: cambié el 8 por 9 para romper la prueba, y cuando lo devolví a 8 seguía saliendo `1 failed`. La tienda no había cambiado, el problema era que no había guardado el archivo en VS Code. Me di cuenta porque el error seguía diciendo `Expected: 9`. También H1: esperaba 6 productos, pero contando a mano en la tienda hay 8, así que el dato de la prueba estaba viejo.
+
+4. **¿Qué bug o riesgo no habría encontrado la automatización por sí sola?**
+   La automatización solo encuentra lo que uno le dice que revise. Por ejemplo, que una dirección muy larga se salga de la tarjeta de confirmación (B18) o que el botón ✕ casi no se vea (B21) no lo detecta ninguna de mis pruebas. Tampoco habría encontrado los bugs si yo no hubiera leído bien los criterios: si la prueba afirma lo que la tienda hace hoy, el bug pasa como si fuera correcto.
+
+5. **¿Qué haríamos distinto en un proyecto real?**
+   Empezaría con el Page Object desde el principio y no al final, porque repetí mucho código antes de tenerlo. También le pediría al equipo de desarrollo que pusiera identificadores de prueba (`data-testid`) y que las etiquetas del formulario estén bien conectadas, porque `getByLabel` no funcionaba y tocó buscar los campos de forma más frágil. Y correría la suite en cada cambio desde el día uno, no solo al terminar.
