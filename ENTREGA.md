@@ -1,32 +1,56 @@
 # Entrega · Laboratorio 3.1 · Introducción a la automatización de pruebas
 
-**Equipo:** `equipo-N` · **Integrantes:** _nombres_ · **Repositorio:** _enlace a este repositorio_
+**Equipo:** `equipo-N` · **Integrantes:** _nombres_ · **Repositorio:** https://github.com/AizaNei/equipo-N-automatizacion
 
 > Respondan aquí, en este archivo, y háganle commit. Sean breves y concretos: una frase buena vale más que un párrafo.
 
 ## 1. ¿Qué automatizamos y por qué? (decisión)
 
-Elijan **mínimo 10 criterios de aceptación** de los que automatizaron (o descartaron). Un buen candidato es repetitivo, estable, de riesgo alto y fácil de verificar por una máquina.
-
 | Criterio (US-xx · CAy) | ¿Automatizamos? | Por qué (frecuencia · riesgo · estabilidad · facilidad de verificar) |
 |---|---|---|
-| _US-04 · CA2_ | Sí / No / Más adelante | _…_ |
+| US-04 · CA2 (no agregar más del stock) | Sí | Riesgo alto (vender lo que no hay). El aviso y el carrito vacío se verifican sin ambigüedad. |
+| US-04 · CA3 (4 + 4 supera el stock) | Sí | Mismo riesgo que CA2, por otro camino. A mano casi nunca se prueba sumar dos veces; la máquina lo hace siempre. |
+| US-05 · CA2 ("+" respeta el stock) | Sí | Botón que se usa mucho; el resultado es un número fácil de comparar. |
+| US-06 · CA2 ("−" no baja de 1) | Sí | Valor límite clásico (1 → 0); deja el carrito en un estado inválido. |
+| US-07 · CA2 (quitar el único producto) | Sí | Flujo frecuente y estable; el texto "Tu carrito está vacío." y el total $ 0 son verificables. |
+| US-09 · CA1 y CA3 (códigos de descuento) | Sí | Afecta dinero. Prueba dirigida por datos: agregar una variante cuesta una línea. |
+| US-10 · CA1 y CA2 (código inválido) | Sí | Riesgo de perder un descuento ya ganado; la secuencia de dos códigos es tediosa a mano. |
+| US-11 · CA2 y US-12 · CA2 (IVA y total con descuento) | Sí | Riesgo máximo (cobro e impuestos). Un oráculo calculado desde el requisito evita aprobar el número que muestra la app. |
+| US-13 · CA3 (no pagar con total cero) | Sí | Riesgo de pedidos inválidos; `toBeDisabled()` es una verificación exacta. |
+| US-14 · CA1 y CA2 (campos obligatorios) | Sí | Estable y repetitivo: los mismos tres mensajes en cada versión. |
+| US-15 · CA1 a CA4 (formato del correo) | Sí | 12 correos distintos: a mano es lento y propenso a errores; con datos es una tabla. |
+| US-16 · CA1, US-17 · CA1 a CA3, US-19 · CA1 (confirmación) | Sí | Flujo completo de compra, el más importante del negocio. Con el Page Object, `comprar()` se escribe una vez. |
+| US-20 (accesibilidad) | Más adelante | Una herramienta automática (axe) encuentra parte; la experiencia real con lector de pantalla requiere revisión humana. |
+| Diseño visual / responsivo | No (por ahora) | Cambia seguido y "se ve bien" es difícil de verificar por una máquina sin comparaciones de imágenes. |
 
 ## 2. Bugs que nuestra suite detecta
 
-Una fila por cada prueba que falló por un bug **del producto**. Enlacen el bug con su clave de Jira y agreguen en Jira un comentario con el nombre de la prueba que lo detecta.
+> En cada prueba la clave aparece como `JIRA-…`: reemplácenla por la clave real del bug en su Jira (por ejemplo `PRJ-12`).
 
 | Prueba (archivo › título) | Bug en Jira (clave) | ¿Quedó con `test.fail(...)`? | Evidencia (captura o trace) |
 |---|---|---|---|
-| _02-carrito › CA3: 4 + 4 mochilas…_ | _PRJ-12_ | Sí | _…_ |
+| 02-carrito › US-04 CA3: 4 + 4 mochilas supera el stock | JIRA-STOCK | Sí | Expected "4", Received "8" |
+| 02-carrito › US-05 CA2: "+" no pasa del stock | JIRA-MAS | Sí | Expected "6", Received "7" |
+| 02-carrito › US-06 CA2: "−" no la deja en 0 | JIRA-MENOS | Sí | Expected "1", Received "0" |
+| 03-descuentos-iva › US-09 CA3: "desc10" y "Desc10" | JIRA-MAYUS | Sí (solo esas 2 filas) | La fila Descuento queda en $ 0 |
+| 03-descuentos-iva › US-10 CA2: un código inválido no borra el descuento | JIRA-CODIGO | Sí | Descuento pasa de $ 6.500 a $ 0 |
+| 03-descuentos-iva › US-11 CA2 y US-12 CA2 · heredados › H2 | JIRA-IVA | Sí | IVA esperado $ 11.115, recibido $ 12.350 · Total esperado $ 69.615, recibido $ 70.850 |
+| 04-checkout › US-13 CA3: no se paga con total cero | JIRA-TOTAL0 | Sí | El botón "Ir a pagar" sigue habilitado |
+| 04-checkout › US-15 CA1-CA3: correos válidos (4 de 6 filas) | JIRA-CORREO | Sí (solo esas 4 filas) | No aparece "¡Pedido confirmado!" |
+| 05-confirmacion › US-16 CA1: formulario vacío en la compra siguiente | JIRA-FORM | Sí | El nombre aparece como "Ana Gómez" |
+| 05-confirmacion › US-17 CA3: número de pedido tras recargar | JIRA-NUMPEDIDO | Sí | Ambos pedidos salen con el mismo número (#1001) |
+
+Sobre US-11 y US-12: es **un solo bug** (el IVA se calcula sobre el subtotal sin descontar) visto desde dos criterios; el total sale mal como consecuencia. US-13 CA3 parece igual a US-06 CA2, pero es **otro bug**: aunque se corrija el "−", la tienda seguiría sin validar el total antes de cobrar.
+
+En US-15, las 4 filas que fallan tienen en común un carácter `.`, `-` o `+` antes de la @, o un dominio de dos niveles (`.edu.co`): es **un solo bug**, una validación de correo demasiado estricta.
 
 ## 3. Pruebas heredadas: nuestro diagnóstico
 
 | Prueba | Veredicto (producto / prueba / inestable / entorno) | Cómo lo comprobamos | Qué hicimos |
 |---|---|---|---|
-| H1 · el catálogo tiene 6 productos | | | |
-| H2 · el IVA de 2 mochilas con DESC20… | | | |
-| H3 · agregar un cuaderno justo después de cargar | | | |
+| H1 · el catálogo tiene 6 productos | Prueba | Falló siempre igual (Expected 6, Received 8). Contamos a mano: hay 8 productos, y US-01 · CA1 dice 8. El dato de la prueba estaba viejo. | La corregimos a 8. |
+| H2 · el IVA de 2 mochilas con DESC20… | Producto | Recalculamos con el requisito: (130.000 − 26.000) × 19 % = $ 19.760; la prueba estaba bien. A mano la tienda muestra $ 24.700 (19 % de 130.000 sin descontar). Falla siempre igual. Es el mismo bug de US-11 · CA2. | `test.fail` con la clave del bug del IVA. |
+| H3 · agregar un cuaderno justo después de cargar | Inestable | Con `--repeat-each=10` dio resultados mezclados: __ de 10 fallaron. Hacía clic con `waitUntil: 'domcontentloaded'`, antes de que la página estuviera lista para responder. | Esperamos una **condición** (la página escribe el carrito en localStorage al estar lista) en lugar de una pausa fija. Después: __ de 10 pasaron. |
 
 ## 4. Medidas
 
