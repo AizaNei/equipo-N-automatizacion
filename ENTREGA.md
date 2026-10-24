@@ -49,7 +49,7 @@ En US-15, las 4 filas que fallan tienen en común un carácter `.`, `-` o `+` an
 |---|---|---|---|
 | H1 · el catálogo tiene 6 productos | Prueba | Falló siempre igual (Expected 6, Received 8). Contamos a mano: hay 8 productos, y US-01 · CA1 dice 8. El dato de la prueba estaba viejo. | La corregimos a 8. |
 | H2 · el IVA de 2 mochilas con DESC20… | Producto | Recalculamos con el requisito: (130.000 − 26.000) × 19 % = $ 19.760; la prueba estaba bien. A mano la tienda muestra $ 24.700 (19 % de 130.000 sin descontar). Falla siempre igual. Es el mismo bug de US-11 · CA2. | `test.fail` con la clave del bug del IVA. |
-| H3 · agregar un cuaderno justo después de cargar | Inestable | Con `--repeat-each=10` dio resultados mezclados: __ de 10 fallaron. Hacía clic con `waitUntil: 'domcontentloaded'`, antes de que la página estuviera lista para responder. | Esperamos una **condición** (la página escribe el carrito en localStorage al estar lista) en lugar de una pausa fija. Después: 10 de 10 pasaron (`--repeat-each=10`, 6,4 s). |
+| H3 · agregar un cuaderno justo después de cargar | Inestable | Sin el arreglo, con `--repeat-each=30` dio resultados mezclados: 7 de 30 fallaron (23 pasaron) sin cambiar nada. Hacía clic con `waitUntil: 'domcontentloaded'`, antes de que la página estuviera lista para responder. | Esperamos una **condición** (la página escribe el carrito en localStorage al estar lista) en lugar de una pausa fija. Después: 10 de 10 pasaron (`--repeat-each=10`, 6,4 s). |
 
 ## 4. Medidas
 
